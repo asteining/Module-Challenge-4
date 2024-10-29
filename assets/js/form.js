@@ -2,40 +2,46 @@ document.addEventListener('DOMContentLoaded', function () {
     const blogForm = document.getElementById('blogForm');
     const errorElement = document.getElementById('error');
 
+    // **Declare the variables at the top without the "Obj" suffix**
+    const username = { username: "" };
+    const title = { title: "" };
+    const content = { content: "" };
+
     if (blogForm) {
         blogForm.addEventListener('submit', function (event) {
             event.preventDefault();  // Prevent default form submission behavior
 
-            // Get the form input values and trim them
-            const username = document.getElementById('username').value.trim();
-            const title = document.getElementById('title').value.trim();
-            const content = document.getElementById('content').value.trim();
+            // **Update the object values dynamically on form submission**
+            username.username = document.getElementById('username').value.trim();
+            title.title = document.getElementById('title').value.trim();
+            content.content = document.getElementById('content').value.trim();
 
-            // **Debugging: Log the values to check if they are captured correctly**
-            console.log('Username:', username);
-            console.log('Title:', title);
-            console.log('Content:', content);
-
-            // **Validate the form (check if any fields are empty)**
-            if (!username || !title || !content) {
+            // **Validate the form (all fields must be filled)**
+            if (!username.username || !title.title || !content.content) {
                 errorElement.textContent = 'Please complete the form.';
-                console.log('Validation failed: Some fields are empty');
-                return;  // Exit if validation fails
+                return;
             }
 
             // Clear any previous error message
             errorElement.textContent = '';
 
-            // Create an object to store the blog post data
-            const blogPost = { username: username, title: title, content: content };
+            // **Debugging: Log the objects to make sure they are correct**
+            console.log('username:', username);
+            console.log('title:', title);
+            console.log('content:', content);
 
-            // Retrieve existing blog posts from localStorage or initialize an empty array
+            // **Retrieve existing blog posts from localStorage or initialize an empty array**
             let existingPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
 
-            // Add the new blog post to the array
-            existingPosts.push(blogPost);
+            // **Ensure existingPosts is always an array**
+            if (!Array.isArray(existingPosts)) {
+                existingPosts = [];  // Reset to an empty array if not an array
+            }
 
-            // Save the updated array back to localStorage
+            // **Push the individual objects into the array**
+            existingPosts.push(username, title, content);
+
+            // Save the array of objects back to localStorage
             localStorage.setItem('blogPosts', JSON.stringify(existingPosts));
 
             // **Redirect to blog.html after successful form submission**

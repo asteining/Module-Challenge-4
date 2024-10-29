@@ -1,6 +1,6 @@
 // Select DOM elements
 const postsContainer = document.getElementById('postsContainer');
-const backButton = document.getElementById('Back');
+const backButton = document.getElementById('back');
 
 // Function to render blog posts from localStorage
 function renderBlogList() {
