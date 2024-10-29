@@ -1,5 +1,41 @@
-// TODO: Create a variable that selects the form element
+document.addEventListener('DOMContentLoaded', function () {
+    const blogForm = document.getElementById('blogForm');
+    const errorElement = document.getElementById('error');
 
-// TODO: Create a function that handles the form submission. Grab the form data and store it in local storage, then redirect to the blog page using the `redirectPage` function. If the form is submitted with missing data, display an error message to the user.
+    if (blogForm) {
+        blogForm.addEventListener('submit', function (event) {
+            event.preventDefault();  // Prevent default form submission behavior
 
-// TODO: Add an event listener to the form on submit. Call the function to handle the form submission.
+            // Get values from the form fields and trim extra spaces
+            const username = document.getElementById('username').value.trim();
+            const title = document.getElementById('title').value.trim();
+            const content = document.getElementById('content').value.trim();
+
+            // Validate the form (all fields must be filled)
+            if (!username || !title || !content) {
+                errorElement.textContent = 'Please complete the form.';
+                return;
+            }
+
+            // Clear any previous error message
+            errorElement.textContent = '';
+
+            // **Create individual objects for each field**
+            const usernameObj = { username: username };
+            const titleObj = { title: title };
+            const contentObj = { content: content };
+
+            // Retrieve existing blog posts from localStorage or initialize an empty array
+            let existingPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
+
+            // **Push the individual objects into the array**
+            existingPosts.push(usernameObj, titleObj, contentObj);
+
+            // Save the array of objects back to localStorage
+            localStorage.setItem('blogPosts', JSON.stringify(existingPosts));
+
+            // Redirect to blog.html after successful form submission
+            window.location.href = 'blog.html';  // Redirect to the blog page
+        });
+    }
+});
