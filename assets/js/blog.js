@@ -1,11 +1,30 @@
-// TODO: Create a variable that selects the main element, and a variable that selects the back button element
+// Select DOM elements
+const postsContainer = document.getElementById('postsContainer');
+const backButton = document.getElementById('Back');
 
-// TODO: Create a function that builds an element and appends it to the DOM
+// Function to render blog posts from localStorage
+function renderBlogList() {
+    const blogPosts = JSON.parse(localStorage.getItem('blogPosts')) || [];
 
-// TODO: Create a function that handles the case where there are no blog posts to display
+    if (blogPosts.length === 0) {
+        postsContainer.innerHTML = '<p>No Blog posts yet...</p>';
+    } else {
+        blogPosts.forEach(post => {
+            const postElement = document.createElement('article');
+            postElement.innerHTML = `
+                <h2>${post.title}</h2>
+                <blockquote>${post.content}</blockquote>
+                <p><strong>By:</strong> ${post.username}</p>
+            `;
+            postsContainer.appendChild(postElement);
+        });
+    }
+}
 
-// TODO: Create a function called `renderBlogList` that renders the list of blog posts if they exist. If not, call the no posts function.
+// Call the function to render posts on page load
+renderBlogList();
 
-// TODO: Call the `renderBlogList` function
-
-// TODO: Redirect to the home page using the `redirectPage` function found in logic.js when the back button is clicked
+// Handle back button redirection
+backButton.addEventListener('click', () => {
+    redirectPage('index.html');
+});
